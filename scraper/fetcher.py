@@ -1,10 +1,17 @@
 from curl_cffi import requests as cffi_requests
-import time
 
 
 def fetch_listings(category_id, page=1):
+    """
+    Fetch one page of product listings from Tiki's internal API.
+
+    Returns:
+        dict with keys "products", "current_page", "last_page" on success.
+        None if the request fails or the response format is unexpected.
+    """
     url = "https://tiki.vn/api/personalish/v1/blocks/listings"
-    
+
+    # Query params reverse-engineered from Chrome DevTools (Network tab).
     params = {
         "limit": 40,
         "category": category_id,
@@ -16,6 +23,9 @@ def fetch_listings(category_id, page=1):
         "version": "home-persionalized",
         "trackity_id": "b0256c5e-7956-331e-052a-172282a630d5",
     }
+
+    # Headers required to mimic a real browser request, including
+    # the guest token and cookie Tiki expects.
     headers = {
         "accept": "application/json, text/plain, */*",
         "referer": "https://tiki.vn/laptop/c8095",
@@ -24,7 +34,8 @@ def fetch_listings(category_id, page=1):
         "cookie": "TOKENS={%22access_token%22:%22***REMOVED***%22}; _trackity=b0256c5e-7956-331e-052a-172282a630d5; delivery_zone=Vk4wMzkwMDYwMDE=",
     }
 
-    # Handle network/timeout errors
+    # curl_cffi with impersonate="chrome" bypasses Tiki's TLS fingerprint
+    # detection, which blocks plain `requests` with a 403.
     try:
         response = cffi_requests.get(
             url,
@@ -34,42 +45,76 @@ def fetch_listings(category_id, page=1):
             timeout=15,
         )
         response.raise_for_status()
+
+    # Each exception type is caught separately so the error message
+    # printed is specific to what actually went wrong.
+    except cffi_requests.exceptions.Timeout:
+        print("Request timed out.")
+        return None
+    except cffi_requests.exceptions.ConnectionError:
+        print("Connection failed.")
+        return None
+    except cffi_requests.exceptions.HTTPError as e:
+        print(f"HTTP error: {e}")
+        return None
     except cffi_requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
-        return []
+        return None
 
-    # Handle invalid JSON response
+    # Response might not be valid JSON (e.g. an HTML error page).
     try:
         data = response.json()
     except ValueError:
         print("Response is not valid JSON.")
-        return []
+        return None
+
+    # Guard against Tiki changing their response schema silently.
+    if "data" not in data:
+        print("Unexpected response format.")
+        return None
 
     results = []
-    for product in data.get("data", []):
-        results.append(
-            {
-                "product_id": product.get("id", None),
-                "name": product.get("name", None),
-                "price": product.get("price", None),
-                "original_price": product.get("original_price", None),
-                "discount_rate": product.get("discount_rate", None),
-                "rating": product.get("rating_average", None),
-                "sold_count": product.get("quantity_sold", None),
-                "url": "https://tiki.vn/" + product.get("url_key", ""),
-            }
-        )
-    return results
+    for product in data["data"]:
+        product_id = product.get("id")
 
+        # product_id is the only mandatory field: it's the primary key
+        # in our DB and the foreign key linking snapshots to products.
+        # Every other field can be missing (stored as NULL), but without
+        # an id there's no way to track this product over time.
+        if product_id is None:
+            print("Skipping product because product_id is missing.")
+            continue
 
-if __name__ == "__main__":
-    all_data = []
-    for page in range(1, 6):
-        data = fetch_listings(8095, page)
-        all_data.extend(data)
-        # Wait 1 second before the next request
+        # Tiki sometimes returns quantity_sold as a plain number/None,
+        # and sometimes as a dict like {"text": "Đã bán 11", "value": 11}.
+        # Normalize to just the numeric value (or None).
+        sold_count_raw = product.get("quantity_sold")
+        if isinstance(sold_count_raw, dict):
+            sold_count = sold_count_raw.get("value")
+        else:
+            sold_count = sold_count_raw
 
-        if page < 5:
-            time.sleep(1)
-    if all_data:
-        print(all_data[0])
+        results.append({
+            "product_id": product_id,
+            "name": product.get("name"),
+            "price": product.get("price"),
+            "original_price": product.get("original_price"),
+            "discount_rate": product.get("discount_rate"),
+            "rating": product.get("rating_average"),
+            "sold_count": sold_count,
+            "url": "https://tiki.vn/" + product.get("url_key", ""),
+        })
+
+    # Fail fast if paging info is missing, rather than letting the caller
+    # crash later on a None comparison (current_page >= last_page).
+    if "paging" not in data:
+        print("Unexpected response format: missing paging.")
+        return None
+
+    paging = data["paging"]
+
+    return {
+        "products": results,
+        "current_page": paging.get("current_page"),
+        "last_page": paging.get("last_page"),
+    }
