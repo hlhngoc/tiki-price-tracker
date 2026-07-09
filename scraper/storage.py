@@ -22,7 +22,10 @@ def init_db(db_name="tiki.db"):
             CREATE TABLE IF NOT EXISTS products (
                 product_id INTEGER PRIMARY KEY,
                 name TEXT,
-                url TEXT
+                url TEXT, 
+                author_name TEXT,
+                seller_id INTEGER,
+                category_path TEXT
             )
         """)
 
@@ -64,12 +67,15 @@ def insert_snapshot(conn, product_data):
     # so this is treated as "latest known value", not immutable —
     # INSERT OR REPLACE overwrites the row if product_id already exists.
     cursor.execute("""
-        INSERT OR REPLACE INTO products (product_id, name, url)
-        VALUES (?, ?, ?)
+        INSERT OR REPLACE INTO products (product_id, name, url, author_name, seller_id, category_path) 
+        VALUES (?, ?, ?, ?, ?, ?)
     """, (
         product_data.get("product_id"),
         product_data.get("name"),
         product_data.get("url"),
+        product_data.get('author_name'),
+        product_data.get('seller_id'),
+        product_data.get('category_path')
     ))
 
     timestamp = datetime.now().isoformat(timespec="seconds")
