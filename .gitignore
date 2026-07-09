@@ -4,4 +4,6 @@ __pycache__/
 tiki.db
 .env
 .DS_Store
+scraper.log
+tiki.db
 
