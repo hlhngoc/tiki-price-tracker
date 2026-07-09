@@ -19,12 +19,12 @@ def fetch_listings(category_id, page=1):
         "limit": 40,
         "category": category_id,
         "page": page,
-        "urlKey": "laptop",
+        "urlKey": "nha-sach-tiki",
         "sort": "top_seller",
         "include": "advertisement",
         "aggregations": 2,
         "version": "home-persionalized",
-        "trackity_id": "b0256c5e-7956-331e-052a-172282a630d5",
+        "trackity_id": "f5734d7a-e114-e105-0437-1acea0d55f9e",
     }
 
     if not os.getenv("TIKI_GUEST_TOKEN"):
@@ -37,7 +37,7 @@ def fetch_listings(category_id, page=1):
     # the guest token and cookie Tiki expects.
     headers = {
         "accept": "application/json, text/plain, */*",
-        "referer": "https://tiki.vn/laptop/c8095",
+        "referer": "https://tiki.vn/nha-sach-tiki/c8322",
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
         "x-guest-token": os.getenv("TIKI_GUEST_TOKEN"),
         "cookie": os.getenv("TIKI_COOKIE"),
@@ -111,6 +111,9 @@ def fetch_listings(category_id, page=1):
             "rating": product.get("rating_average"),
             "sold_count": sold_count,
             "url": "https://tiki.vn/" + product.get("url_key", ""),
+            'author_name': product.get('author_name'),
+            'seller_id': product.get('seller_id'),
+            'category_path': product.get('primary_category_path'),
         })
 
     # Fail fast if paging info is missing, rather than letting the caller
