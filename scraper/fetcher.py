@@ -1,5 +1,8 @@
 from curl_cffi import requests as cffi_requests
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 def fetch_listings(category_id, page=1):
     """
@@ -24,16 +27,21 @@ def fetch_listings(category_id, page=1):
         "trackity_id": "b0256c5e-7956-331e-052a-172282a630d5",
     }
 
+    if not os.getenv("TIKI_GUEST_TOKEN"):
+        raise EnvironmentError("Missing TIKI_GUEST_TOKEN in .env")
+    
+    if not os.getenv("TIKI_COOKIE"):
+        raise EnvironmentError("Missing TIKI_COOKIE in .env")
+    
     # Headers required to mimic a real browser request, including
     # the guest token and cookie Tiki expects.
     headers = {
         "accept": "application/json, text/plain, */*",
         "referer": "https://tiki.vn/laptop/c8095",
         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
-        "x-guest-token": "***REMOVED***",
-        "cookie": "TOKENS={%22access_token%22:%22***REMOVED***%22}; _trackity=b0256c5e-7956-331e-052a-172282a630d5; delivery_zone=Vk4wMzkwMDYwMDE=",
+        "x-guest-token": os.getenv("TIKI_GUEST_TOKEN"),
+        "cookie": os.getenv("TIKI_COOKIE"),
     }
-
     # curl_cffi with impersonate="chrome" bypasses Tiki's TLS fingerprint
     # detection, which blocks plain `requests` with a 403.
     try:
