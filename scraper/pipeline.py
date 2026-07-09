@@ -22,21 +22,19 @@ def run_scraper():
         conn.execute("PRAGMA foreign_keys = ON")
 
         page = 1
-        max_pages = 20  # hard cap to avoid infinite loop if last_page is ever wrong
 
-        while page <= max_pages:
+        while True:
             result = None
             for attempt in range(2):
-                result = fetch_listings(8095, page)
+                result = fetch_listings(8322, page)
                 if result is not None:
                     break
                 logging.error(f"Failed to fetch page {page}. Retrying...")
                 time.sleep(1)
 
             if result is None:
-                logging.error(f"Skipping page {page} due to repeated request errors.")
-                page += 1
-                continue
+                logging.error(f"Failed to load page {page} after retries. Stopping.")
+                break
 
             products = result["products"]
             current_page = result["current_page"]
