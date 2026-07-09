@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 tiki.db
+.env
+.DS_Store
+
