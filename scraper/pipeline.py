@@ -41,7 +41,10 @@ def run_scraper():
             last_page = result["last_page"]
 
             for product in products:
-                insert_snapshot(conn, product)
+                try:
+                    insert_snapshot(conn, product)
+                except sqlite3.IntegrityError:
+                    logging.warning(f"Skipping duplicate snapshot for product {product.get('product_id')}")
 
             conn.commit()
             logging.info(f"Page {current_page}/{last_page} done, {len(products)} products saved.")
