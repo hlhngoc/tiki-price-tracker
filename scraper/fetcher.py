@@ -101,6 +101,13 @@ def fetch_listings(category_id, page=1):
             sold_count = sold_count_raw.get("value")
         else:
             sold_count = sold_count_raw
+        
+        impression_info = product.get('visible_impression_info')
+        if impression_info:
+            amplitude = impression_info.get('amplitude')
+            seller_type = amplitude.get('seller_type') if amplitude else None
+        else:
+            seller_type = None
 
         results.append({
             "product_id": product_id,
@@ -113,6 +120,7 @@ def fetch_listings(category_id, page=1):
             "url": "https://tiki.vn/" + product.get("url_key", ""),
             'author_name': product.get('author_name'),
             'seller_id': product.get('seller_id'),
+            'seller_type': seller_type,
             'category_path': product.get('primary_category_path'),
         })
 
