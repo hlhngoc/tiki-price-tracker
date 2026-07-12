@@ -6,4 +6,6 @@ tiki.db
 .DS_Store
 scraper.log
 tiki.db
-
+*.log
+inspects.py
+test_run.py
