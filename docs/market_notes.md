@@ -1,6 +1,26 @@
 # Market Notes — Vietnam Online Book Market
 
-*Day 6 deliverable — Phase 2, tiki-book-price-intelligence*
+---
+
+## 0. Corporate Context (Tiki, company-wide)
+
+### 0a. Financial distress & investor exit
+- VNG's Q4/2024 financial report shows VNG withdrew all personnel from Tiki and reclassified Tiki Global from "associate company" to "long-term financial investment" — meaning VNG remains a major shareholder but no longer participates in operations or governance.
+- As of 31/12/2024, VNG had invested 510 billion VND into Tiki Global; the value of this investment had already been written down to zero since Q1/2019 — VNG has recognized a full loss on the investment.
+- Founder Trần Ngọc Thái Sơn stepped down as CEO in 2023 to focus on an IPO effort; as of the most recent reporting, that IPO has still not materialized.
+- Per Tech in Asia, Tiki's FY2022 total revenue fell 7% YoY to below $200M USD, with a reported loss of $93M USD (up 39% YoY).
+
+**Source tier:** Verified — Markettimes.vn / CafeF (14/02/2025), corroborated by a separate syndication on DNSE (identical content, same original source). Two independent re-publications of the same underlying report increase confidence this is not a one-off or fabricated claim.
+
+### 0b. Platform-wide market share time-series
+- Pre-TikTok Shop (Metric.vn, data window Nov 2021–May 2022): Shopee ~73%, Lazada ~20%, Tiki ~5.8%, Sendo ~1.4%.
+- H1/2024 (Metric.vn): Shopee 67.9%, TikTok Shop 23.2%, Lazada 7.6%, Tiki ~1.3% (997.06 billion VND revenue).
+- 2025 (per Section 1b below): Tiki + Lazada combined ~3%, Tiki alone estimated ~1%.
+- YouNet ECI, Q2/2024: Tiki had only 8,800 active sellers (down 19.1% YoY), versus Shopee's 261,000.
+
+**⚠️ Scope warning:** All figures in this subsection (5.8% → 1.3% → ~1%) are **platform-wide market share across all product categories** — not specific to books. This is a different metric from Section 1a's book-category-specific 3% figure. Do not cite the 0b time-series as evidence of book-category trends; it is company-wide context only, useful for understanding Tiki's overall trajectory and the pressure it's under, not as a direct stand-in for book-specific dynamics.
+
+**Source tier:** Verified — Metric.vn / YouNet ECI, as reported by Markettimes.vn (14/02/2025).
 
 ---
 
@@ -61,7 +81,7 @@ Unofficial/counterfeit sellers reportedly discount books 50–70% off cover pric
 | **Delivery speed** | Very fast (TikiNOW) — stock already in Tiki's own warehouse; 2-hour or same-day delivery. | Depends on the individual shop's own fulfillment speed and handover to the carrier. |
 | **Assortment breadth** | Curated — focused on best-sellers and titles from major publishers (Nhã Nam, Trẻ, Kim Đồng, etc.). | Much broader — includes used books, rare books, specialized/academic texts that Tiki Trading doesn't carry. |
 
-**Strategic shift:** Per YouNet ECI market research, Tiki previously pushed to expand its 3P marketplace to compete on catalog breadth against Shopee/Lazada. It has since pivoted: Tiki Trading (1P) now accounts for ~75% of Tiki's own book-category GMV.
+**Strategic shift:** Per YouNet ECI market research, Tiki previously pushed to expand its 3P marketplace to compete on catalog breadth against Shopee/Lazada. It has since pivoted: Tiki Trading (1P) now accounts for ~75% of Tiki's **total platform-wide GMV** (all categories, not book-specific — same scope caveat as Section 1). No book-category-specific 1P/3P split is currently available; whether the book category mirrors this platform-wide figure is an open question, not a confirmed fact (see Section 4).
 
 **Why the pivot toward 1P:**
 - **Protecting the core brand:** Books are central to Tiki's brand identity; unchecked 3P growth previously exposed Tiki to counterfeit-book scandals that damaged trust with its loyal customer base. Consolidating around 1P restores full quality control.
@@ -73,9 +93,9 @@ Unofficial/counterfeit sellers reportedly discount books 50–70% off cover pric
 
 ## 4. Reconciling the Apparent Contradiction
 
-Metric's data (Section 1) measures Tiki's market share against external competitors (Shopee, TikTok Shop) across the entire online book category — by this measure, Tiki is losing ground to outside rivals. YouNet's data (Section 3), on the other hand, measures the GMV split between 1P and 3P *within Tiki itself* — by this measure, Tiki's internal book revenue mix is shifting toward 1P.
+Metric's data (Section 1) measures Tiki's market share against external competitors (Shopee, TikTok Shop) specifically within the online book category — by this measure, Tiki is losing ground to outside rivals in books. YouNet's data (Section 3), on the other hand, measures the GMV split between 1P and 3P *within Tiki itself, across all categories platform-wide* — by this measure, Tiki's internal revenue mix (company-wide) is shifting toward 1P.
 
-These two metrics measure different scopes — industry-wide share vs. internal revenue composition — so they are not contradictory. They may even be complementary: Tiki appears to be shrinking its overall footprint in the book category while tightening control over the (now more concentrated) 1P segment that remains.
+These two metrics differ in scope on two dimensions at once — industry-wide book share vs. internal platform-wide revenue composition — so they are not contradictory, but they also cannot be combined into a single "book-category 1P story" without an additional assumption. Whether Tiki's *book-specific* 1P/3P mix follows the same ~75% pattern as the platform-wide figure is unverified and is treated as an open hypothesis (not a fact) for the Day 7–8 issue tree, not asserted here.
 
 ---
 
